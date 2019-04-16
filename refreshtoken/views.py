@@ -7,6 +7,7 @@ from rest_framework.decorators import detail_route
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework_jwt.settings import api_settings
+from rest_framework.authentication import BasicAuthentication
 
 from .models import RefreshToken
 from .serializers import DelegateJSONWebTokenSerializer, RefreshTokenSerializer
@@ -22,6 +23,7 @@ class DelegateJSONWebToken(generics.CreateAPIView):
     is valid.
     """
     permission_classes = [AllowAny]
+    authentication_classes = [BasicAuthentication]
     serializer_class = DelegateJSONWebTokenSerializer
 
     def post(self, request, *args, **kwargs):
