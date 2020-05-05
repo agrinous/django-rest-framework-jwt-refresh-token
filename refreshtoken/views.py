@@ -3,7 +3,7 @@ from datetime import datetime
 
 from django.utils.translation import ugettext as _
 from rest_framework import exceptions, generics, status, viewsets
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework_jwt.settings import api_settings
@@ -58,7 +58,7 @@ class RefreshTokenViewSet(viewsets.ModelViewSet):
             return queryset
         return queryset.filter(user__pk=user.pk)
 
-    @detail_route(methods=['post'])
+    @action(detail=True, methods=['post'])
     def revoke(self, request, key=None):
         obj = self.get_object()
         new_rt = obj.revoke()
