@@ -37,9 +37,10 @@ class DelegateJSONWebToken(generics.CreateAPIView):
             payload['orig_iat'] = timegm(datetime.utcnow().utctimetuple())
         token = jwt_encode_handler(payload)
         response_data = jwt_response_payload_handler(token, user, request)
-        if api_settings.JWT_AUTH_COOKIE:
+        response = Response(response_data,status=status.HTTP_200_OK)
+
+        if api_settings.JWT_AUTH_COOKIE and api_settings.JWT_EXPIRATION_DELTA:
             expiration = (datetime.utcnow() + api_settings.JWT_EXPIRATION_DELTA)
-            response = Response(response_data,status=status.HTTP_200_OK)
             response.set_cookie(
                 api_settings.JWT_AUTH_COOKIE,
                 token,
